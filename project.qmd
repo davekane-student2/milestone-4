@@ -1,0 +1,32 @@
+---
+title: "Diamond Prices by Carat and Clarity"
+format: html
+execute:
+  echo: false
+  message: false
+  warning: false
+---
+
+```{r}
+library(tidyverse)
+
+diamonds_df <- read_csv("archive.zip", show_col_types = FALSE)
+
+diamonds_df |>
+  filter(carat <= 3) |>
+  ggplot(aes(x = carat, y = price, color = clarity)) +
+  geom_point(alpha = 0.15, size = 0.6) +
+  geom_smooth(se = FALSE, linewidth = 0.9) +
+  scale_y_continuous(labels = scales::label_dollar()) +
+  scale_color_viridis_d(option = "turbo") +
+  labs(
+    title = "Better Clarity Allows Smaller Diamonds to Command High Prices",
+    subtitle = "Price vs. carat weight across nearly 54,000 diamonds, grouped by clarity grade",
+    x = "Carat Weight",
+    y = "Price (USD)",
+    color = "Clarity",
+    caption = "Source: diamonds.csv (archive.zip)"
+  ) +
+  theme_minimal(base_size = 13) +
+  guides(color = guide_legend(override.aes = list(alpha = 1, size = 2)))
+```
